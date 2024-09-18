@@ -8,6 +8,13 @@ import detect as det
 import os
 import threading as th
 
+
+
+
+
+
+
+
 # Basics...
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sc = g.play()
@@ -25,11 +32,14 @@ clock = g.pg.time.Clock()
 last = 0
 last_c1 = last
 last_c2 = last
+last_h = last
+last_alm = last
 last_s0 = last
 last_s1 = last
 last_s2 = last
 last_s3 = last
-last_h = last
+last_sh = last
+fight_start = last
 
 # Surfaces...
 surf = sfsp.get()
@@ -78,6 +88,13 @@ assasin_blade_frames = [globals()[f'assasin_blade{x}'] for x in range(1, 40)]
 blade_frame = 0
 blade_factor = 0
 
+assasin_caught = g.pg.image.load('./assets/CaughtAssassin.png')
+for x in range(1, 13):
+    globals()[f'assasin_caught{x}'] = sfsp.sp_get(assasin_caught, (0, 0), x-1, 1/(3*32)*g.np.mean([g.c.W, g.c.H]), (0, 0, 0))
+assasin_caught_frames = [globals()[f'assasin_caught{x}'] for x in range(1, 13)]
+caught_frame = 0
+caught_factor = 0
+
 mob_death = g.pg.image.load('./assets/MobDies.png')
 for x in range(1, 40):
     globals()[f'mob_death{x}'] = sfsp.sp_get(mob_death, (0, 0), x-1, 1/68*g.np.mean([g.c.W, g.c.H]), (0, 0, 0))
@@ -89,6 +106,13 @@ for x in range(1, 30):
     globals()[f'mob_poisoned{x}'] = sfsp.sp_get(mob_poisoned, (0, 0), x-1, 1/68 *g.np.mean([g.c.W, g.c.H]), (0, 0, 0))
 mob_poisoned_frames = [globals()[f'mob_poisoned{x}'] for x in range(1, 30)]
 mob_poisoned_frame = 0
+
+mob_catch = g.pg.image.load('./assets/MobAlert.png')
+for x in range(1, 13):
+    globals()[f'mob_catch{x}'] = sfsp.sp_get(mob_catch, (0, 0), x-1, 1/68 *g.np.mean([g.c.W, g.c.H]), (0, 0, 0))
+mob_catch_frames = [globals()[f'mob_catch{x}'] for x in range(1, 13)]
+catch_frame = 0
+catch_factor = 0
 
 # Static sprites...
 cards = g.pg.sprite.Group()
@@ -152,6 +176,10 @@ card_list = [clubs, diams, hears, spads]
 symbol = None
 num = 0
 
+# Gameplay...
+silence = True
+almost = False
+
 # MAIN LOOP...
 while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
@@ -194,6 +222,8 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
         if event.type == HEAR:
             hearing = True
 
+
+
     # If we haven't quit...
 
     # Scene...
@@ -215,7 +245,33 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
 
         # Place dynamic backgrounds...
-        if symbol == 0:
+        if not silence:
+            sc.blit(assasin_caught_frames[caught_frame],
+                    (2 * g.c.W / 3 - 32 - 170 + caught_factor * 10, 2 * g.c.H / 3 - 32))
+            sc.blit(mob_catch_frames[catch_frame], (2 * g.c.W / 3 - 55, 2 * g.c.H / 3 - 125))
+            now = g.pg.time.get_ticks()
+            if now - last_sh >= g.c.SCENE + 5:
+                caught_frame += 1
+                catch_frame += 1
+                last_sh = now
+                if caught_frame < 9:
+                    caught_factor += 1
+                else:
+                    caught_factor = 9
+
+            # Finding out if it's the end of the animation...
+            if caught_frame == 12 or catch_frame == 12:
+                in_scene = False
+                my_game_works = True
+                catch_frame = 0
+                caught_frame = 0
+                caught_factor = 0
+                fight_start = g.pg.time.get_ticks()
+                silence = True
+                almost = False
+                hearing = False
+
+        elif symbol == 0:
             sc.blit(assasin_gun_frames[gun_frame],
                     (2 * g.c.W / 3 - 32 - 170 + gun_factor * 10, 2 * g.c.H / 3 - 32))
             sc.blit(mob_death_frames[mob_death_frame], (2 * g.c.W / 3 - 55, 2 * g.c.H / 3 - 125))
@@ -309,7 +365,10 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
     # Game...
     if my_game_works:
-
+        if not silence:
+            in_scene = True
+            my_game_works = False
+            continue
         # Fill backgrounds...
         surf["SBackground"]["Wall"].fill((25, 25, 25))
         surf["SBackground"]["Table"].fill((150, 75, 0))
@@ -328,12 +387,29 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 sc.blit(surf["SBackground"][bg], surf["SBackground"]["loc_" + bg])
 
         # Place dynamic backgrounds...
+        # Fight?
         now = g.pg.time.get_ticks()
-        if hearing and now - last_h >= g.c.UNV:
-            hearing = False
-        if not hearing:
-            last_h = now
-            sc.blit(surf["DBackground"]["Assassinate"], surf["DBackground"]["loc_Assassinate"])
+        if fight_start:
+            if now - fight_start >= g.c.FIGHT:
+                my_game_works = False
+                in_menu = True
+                continue
+        else:
+            # for now, we assume no time passes between two iterations, and last_h and last_alm are == now, even if now was updated and they were updated only last iteration of the game loop
+            if not hearing and not almost:
+                sc.blit(surf["DBackground"]["Assassinate"], surf["DBackground"]["loc_Assassinate"])
+                last_h = now
+            elif hearing and not almost:
+                if now - last_h >= g.c.BACKSWING:
+                    hearing = False
+                    almost = True
+                    last_alm = now
+            elif not hearing and almost:
+                if now - last_alm >= g.c.ALERT:
+                    almost = False
+                    hearing = False
+            else:
+                silence = False
         if now - last >= g.c.HAND:
             hand_frame += 1
             last = now
@@ -378,7 +454,8 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
         cards.draw(sc)
 
         # Quitting?...
-        if surf["SBackground"]['rect_Quit'].collidepoint(g.pg.mouse.get_pos()) and mouse_pressed:
+        now = g.pg.time.get_ticks()
+        if (surf["SBackground"]['rect_Quit'].collidepoint(g.pg.mouse.get_pos()) and mouse_pressed) or now - fight_start >= g.c.FIGHT:
             my_game_works = False
             in_menu = True
             mouse_pressed = False
