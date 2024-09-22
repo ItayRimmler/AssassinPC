@@ -1,6 +1,8 @@
 import pygame as pg
 import c
 import numpy as np
+import random as r
+import queue as qu
 
 
 # Initiate game...

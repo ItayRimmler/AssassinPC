@@ -1,6 +1,19 @@
 import g
 import sounddevice as sd
 
+def read(kyu, order, ev):
+    while True:
+        if not kyu.empty():
+            pass
+        else:
+            if order:
+                kyu.put(g.r.choice(range(0, 4)))
+                kyu.put(g.r.choice(range(0, 12)))
+                evi = g.pg.event.Event(ev)
+                g.pg.event.post(evi)
+            else:
+                pass
+
 def listen(ev, already, do):
     while do[0]:
         if not already:
