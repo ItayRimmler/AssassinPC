@@ -25,7 +25,7 @@ class Card(g.pg.sprite.Sprite):
     def __init__(self, im):
         super().__init__()
         self.image = g.pg.transform.scale(g.pg.image.load(im), (1/4*g.np.mean([g.c.W, g.c.H]), 1/3*g.np.mean([g.c.W, g.c.H])))
-        self.rect = self.image.get_rect(midbottom=(g.c.W/2, 3*g.c.H/4))
+        self.rect = self.image.get_rect(midbottom=(g.c.W/2 + 5*g.c.W/48, 3*g.c.H/4))
 
 def sprite_single():
     return g.pg.sprite.GroupSingle()
@@ -51,12 +51,13 @@ quit_rect = quit_button.get_rect(center=(80, int(g.c.H - 80)))
 quit_rect.normalize()
 credit_myself = words(500, "a-Me")
 current_card = words(30, "Current Card:")
-assassinate_button = words(30, "Press x to ASSASSINATE", "Red") # unused
+assassinate_button = words(30, "Press x to ASSASSINATE", "Green") # unused
 assassinate_rect = assassinate_button.get_rect(bottomleft=(1/4*g.np.mean([g.c.W, g.c.H])/2 + g.c.W/2 + 50, g.c.H/2 - 20)) # unused
+assassin_detect = words(30, "Press z to Detect Card", "Green")
 
 # Dictionaries of surfaces...
-static_background = {"Wall": all, "loc_Wall": (0, 0), "Table": half, "loc_Table": (0, 0.5*g.c.H), "Texture": texture, "Quit": quit_button, "loc_Quit": (80, int(g.c.H - 80)), "rect_Quit": quit_rect, "Current_card": current_card, "loc_Current_card": (g.c.W/2 - 1/4*g.np.mean([g.c.W, g.c.H]) + 60, 3*g.c.H/4 - 1/3*g.np.mean([g.c.W, g.c.H]) - 60)}
-dynamic_background = {"Assassinate": assassinate_button, "loc_Assassinate": (1/4*g.np.mean([g.c.W, g.c.H])/2 + g.c.W/2 + 50, g.c.H/2 - 50), "rect_Assassinate": assassinate_rect}
+static_background = {"Wall": all, "loc_Wall": (0, 0), "Table": half, "loc_Table": (0, 0.5*g.c.H), "Texture": texture, "Quit": quit_button, "loc_Quit": (80, int(g.c.H - 80)), "rect_Quit": quit_rect, "Current_card": current_card, "loc_Current_card": (17*g.c.W/24 - 1/4*g.np.mean([g.c.W, g.c.H]) + 60, 3*g.c.H/4 - 1/3*g.np.mean([g.c.W, g.c.H]) - 60)}
+dynamic_background = {"Assassinate": assassinate_button, "loc_Assassinate": (1/4*g.np.mean([g.c.W, g.c.H])/2 + 15*g.c.W/24 , g.c.H/2 - 50), "rect_Assassinate": assassinate_rect}
 scene = {"Sky": all, "loc_Sky": (0, 0), "Floor": half, "loc_Floor": (0, 0.5*g.c.H)}
 menu = {"Wall": all, "loc_Wall": (0, 0), "Title": title, "loc_Title": (int(g.c.W/2 - 160), int(g.c.H/5)), "Credits": cre_button, "loc_Credits": (int(g.c.W/3 - 250), int(4 * g.c.H/5)), "Instructions": inst_button, "loc_Instructions": (int(2 * g.c.W/3 - 280), int(4 * g.c.H/5)), "Play": play_button, "loc_Play": (int(g.c.W - 250), int(4 * g.c.H/5)), "rect_Play": play_rect, "rect_Instruction": inst_rect, "rect_Credits": cre_rect}
 credits = {"Wall": all, "loc_Wall": (0, 0), "Me": credit_myself, "loc_Me": (0, 0)}

@@ -417,7 +417,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             last = now
             if hand_frame > 13:
                 hand_frame = 0
-        sc.blit(hand_frames[hand_frame], (2*g.c.W/3 - 32, 2*g.c.H/3 - 32))
+        sc.blit(hand_frames[hand_frame], (2*g.c.W/3, 2*g.c.H/3 - 30))
 
         # Place cards...
         now = g.pg.time.get_ticks()

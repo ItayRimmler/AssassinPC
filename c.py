@@ -1,6 +1,6 @@
 # Screen dimensions...
-W = 1400
-H = 700
+W = 1500
+H = 800
 
 # Frame-rate...
 FR = 60
@@ -23,5 +23,5 @@ UNV = 3000
 SR = 44100
 ALERT = 4000
 FIGHT = 15000
-BACKSWING = 200
+BACKSWING = 500
 
