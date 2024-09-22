@@ -8,13 +8,13 @@ FR = 60
 # Sprite cooldown...
 HAND = 85
 SWAP = 50
-SCENE = 50
+SCENE = 65
 
 # Keyboard interactions...
-space = False
-space_rel = True
-enter = False
-enter_rel = True
+z = False
+z_rel = True
+x = False
+x_rel = True
 
 # Sound detection parameters...
 DUR = 1

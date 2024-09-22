@@ -51,8 +51,8 @@ quit_rect = quit_button.get_rect(center=(80, int(g.c.H - 80)))
 quit_rect.normalize()
 credit_myself = words(500, "a-Me")
 current_card = words(30, "Current Card:")
-assassinate_button = words(30, "ASSASSINATE", "Red")
-assassinate_rect = assassinate_button.get_rect(bottomleft=(1/4*g.np.mean([g.c.W, g.c.H])/2 + g.c.W/2 + 50, g.c.H/2 - 20))
+assassinate_button = words(30, "Press x to ASSASSINATE", "Red") # unused
+assassinate_rect = assassinate_button.get_rect(bottomleft=(1/4*g.np.mean([g.c.W, g.c.H])/2 + g.c.W/2 + 50, g.c.H/2 - 20)) # unused
 
 # Dictionaries of surfaces...
 static_background = {"Wall": all, "loc_Wall": (0, 0), "Table": half, "loc_Table": (0, 0.5*g.c.H), "Texture": texture, "Quit": quit_button, "loc_Quit": (80, int(g.c.H - 80)), "rect_Quit": quit_rect, "Current_card": current_card, "loc_Current_card": (g.c.W/2 - 1/4*g.np.mean([g.c.W, g.c.H]) + 60, 3*g.c.H/4 - 1/3*g.np.mean([g.c.W, g.c.H]) - 60)}

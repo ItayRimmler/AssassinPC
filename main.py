@@ -179,29 +179,29 @@ num = 0
 # Gameplay...
 silence = True
 almost = False
-
+last_temp = last
 # MAIN LOOP...
 while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
     # Check events...
     for event in ev.get():
         if event.type == g.pg.KEYDOWN:
-            if event.key == g.pg.K_SPACE and g.c.space_rel:
-                g.c.space = True
-                g.c.space_rel = False
+            if event.key == g.pg.K_z and g.c.z_rel:
+                g.c.z = True
+                g.c.z_rel = False
         elif event.type == g.pg.KEYUP:
-            if event.key == g.pg.K_SPACE:
-                g.c.space = False
-                g.c.space_rel = True
+            if event.key == g.pg.K_z:
+                g.c.z = False
+                g.c.z_rel = True
 
         if event.type == g.pg.KEYDOWN:
-            if event.key == g.pg.K_RETURN and g.c.enter_rel:
-                g.c.enter = True
-                g.c.enter_rel = False
+            if event.key == g.pg.K_x and g.c.x_rel:
+                g.c.x = True
+                g.c.x_rel = False
         elif event.type == g.pg.KEYUP:
-            if event.key == g.pg.K_RETURN:
-                g.c.enter = False
-                g.c.enter_rel = True
+            if event.key == g.pg.K_x:
+                g.c.x = False
+                g.c.x_rel = True
 
         if event.type == g.pg.QUIT:
             g.q()
@@ -220,7 +220,8 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 mouse_pressed = False
 
         if event.type == HEAR:
-            hearing = True
+            if my_game_works:
+                hearing = True
 
 
 
@@ -250,7 +251,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                     (2 * g.c.W / 3 - 32 - 170 + caught_factor * 10, 2 * g.c.H / 3 - 32))
             sc.blit(mob_catch_frames[catch_frame], (2 * g.c.W / 3 - 55, 2 * g.c.H / 3 - 125))
             now = g.pg.time.get_ticks()
-            if now - last_sh >= g.c.SCENE + 5:
+            if now - last_sh >= g.c.SCENE:
                 caught_frame += 1
                 catch_frame += 1
                 last_sh = now
@@ -397,7 +398,8 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
         else:
             # for now, we assume no time passes between two iterations, and last_h and last_alm are == now, even if now was updated and they were updated only last iteration of the game loop
             if not hearing and not almost:
-                sc.blit(surf["DBackground"]["Assassinate"], surf["DBackground"]["loc_Assassinate"])
+                if (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3):
+                    sc.blit(surf["DBackground"]["Assassinate"], surf["DBackground"]["loc_Assassinate"])
                 last_h = now
             elif hearing and not almost:
                 if now - last_h >= g.c.BACKSWING:
@@ -419,7 +421,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
         # Place cards...
         now = g.pg.time.get_ticks()
-        if g.c.space and now - last_c1 >= g.c.SWAP:
+        if g.c.z and now - last_c1 >= g.c.SWAP:
             cards.empty()
             if not symbol and not symbol == 0:
                 symbol = -1
@@ -429,7 +431,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             cards.add(card_list[symbol][num])
             g.c.space_rel = False
             last_c1 = now + g.c.SWAP
-        if surf["DBackground"]['rect_Assassinate'].collidepoint(g.pg.mouse.get_pos())  and now - last_c1 >= g.c.SWAP and (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and mouse_pressed and not hearing:
+        if g.c.x and now - last_c1 >= g.c.SWAP and (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and not hearing and not almost:
             in_scene = True
             my_game_works = False
             start_s = now
@@ -455,7 +457,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
         # Quitting?...
         now = g.pg.time.get_ticks()
-        if (surf["SBackground"]['rect_Quit'].collidepoint(g.pg.mouse.get_pos()) and mouse_pressed) or now - fight_start >= g.c.FIGHT:
+        if surf["SBackground"]['rect_Quit'].collidepoint(g.pg.mouse.get_pos()) and mouse_pressed:
             my_game_works = False
             in_menu = True
             mouse_pressed = False
