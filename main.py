@@ -10,11 +10,6 @@ import threading as th
 
 
 
-
-
-
-
-
 # Basics...
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sc = g.play()
@@ -56,14 +51,17 @@ thread = [True]
 # Custom events...
 HEAR = g.pg.USEREVENT + 1
 READ = g.pg.USEREVENT + 2
-thread_listen = th.Thread(target=det.listen, args=(HEAR, in_scene, thread))
+read_event = g.pg.event.Event(READ)
+listening = [False]
+thread_listen = th.Thread(target=det.listen, args=(HEAR, listening, thread))
+reading = [False]
 kyu = g.qu.Queue()
-reading = False
-thread_read = th.Thread(target=det.read, args=(kyu,reading,READ,))
+thread_read = th.Thread(target=det.read, args=(kyu, reading, thread,))
 hearing = False
 
 # Threading...
 thread_listen.start()
+thread_read.start()
 
 # Static sprite sheets...
 hand = g.pg.image.load('./assets/Hand.png')
@@ -188,16 +186,15 @@ card_list = [clubs, diams, hears, spads]
 symbol = None
 num = 0
 
-# Gameplay...
+# Gameplay and misc...
 silence = True
 almost = False
 last_temp = last
-start_read_assassin_silent = False
-start_read_assassin = False
+read_animation = False
 
 # MAIN LOOP...
 while my_game_works or in_credits or in_menu or in_inst or in_scene:
-    print(symbol, num, start_read_assassin, start_read_assassin_silent, kyu)
+
     # Check events...
     for event in ev.get():
         if event.type == g.pg.KEYDOWN:
@@ -239,13 +236,13 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 hearing = True
 
         if event.type == READ:
-            if my_game_works:
-                reading = True
+            reading[0] = True
 
     # If we haven't quit...
 
     # Scene...
     if in_scene:
+        listening[0] = False
 
         # Fill backgrounds...
         surf["Scene"]["Sky"].fill((75, 25, 100))
@@ -263,7 +260,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
 
         # Place dynamic backgrounds...
-        if start_read_assassin_silent:
+        if read_animation:
             sc.blit(assasin_choose_frames[choose_frame],
                     (2 * g.c.W / 3 - 32 - 170, 2 * g.c.H / 3 - 82))
             now = g.pg.time.get_ticks()
@@ -276,9 +273,9 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 in_scene = False
                 my_game_works = True
                 choose_frame = 0
-                start_read_assassin_silent = False
-                start_read_assassin = True
                 g.c.z_rel = True
+                g.pg.event.post(read_event)
+                read_animation = False
 
         elif not silence:
             sc.blit(assasin_caught_frames[caught_frame],
@@ -305,6 +302,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 silence = True
                 almost = False
                 hearing = False
+                reading = [False]
 
         elif symbol == 0:
             sc.blit(assasin_gun_frames[gun_frame],
@@ -435,14 +433,17 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 if (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3):
                     sc.blit(surf["DBackground"]["Assassinate"], surf["DBackground"]["loc_Assassinate"])
                 sc.blit(surf["DBackground"]["Detect"], surf["DBackground"]["loc_Detect"])
+                listening[0] = True
                 last_h = now
             elif hearing and not almost:
                 sc.blit(surf["DBackground"]["Alert"], surf["DBackground"]["loc_Alert"])
+                listening[0] = False
                 if now - last_h >= g.c.BACKSWING:
                     hearing = False
                     almost = True
                     last_alm = now
             elif not hearing and almost:
+                listening[0] = True
                 sc.blit(surf["DBackground"]["Alert"], surf["DBackground"]["loc_Alert"])
                 if now - last_alm >= g.c.ALERT:
                     almost = False
@@ -458,21 +459,25 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
         # Place cards...
         now = g.pg.time.get_ticks()
-        if g.c.z and now - last_c1 >= g.c.SWAP:
+        if g.c.z:
+            kyu.queue.clear()
             in_scene = True
             my_game_works = False
             g.c.z = False
             g.c.z_rel = True
-            start_read_assassin_silent = True
+            read_animation = True
             continue
+
         if not kyu.empty():
             symbol = kyu.get_nowait()
             num = kyu.get_nowait()
+            reading[0] = False
+
+        if (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3):
             cards.empty()
             cards.add(card_list[symbol][num])
-            last_c1 = now + g.c.SWAP
-            reading = False
-        if g.c.x and now - last_c1 >= g.c.SWAP and (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and not hearing and not almost:
+
+        if g.c.x and (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and not hearing and not almost:
             in_scene = True
             my_game_works = False
             start_s = now
@@ -554,3 +559,4 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
 # Close threads...
 thread_listen.join()
+thread_read.join()

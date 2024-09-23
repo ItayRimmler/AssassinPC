@@ -3,6 +3,7 @@ import c
 import numpy as np
 import random as r
 import queue as qu
+import time as t
 
 
 # Initiate game...

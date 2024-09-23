@@ -54,7 +54,7 @@ current_card = words(30, "Current Card:")
 assassinate_button = words(30, "Press x to ASSASSINATE", "Green") # unused
 assassinate_rect = assassinate_button.get_rect(bottomleft=(1/4*g.np.mean([g.c.W, g.c.H])/2 + g.c.W/2 + 50, g.c.H/2 - 20)) # unused
 assassin_detect = words(30, "Press z to Detect Card", "Green")
-alert = words(30, g.r.choice(["You're being heard...", "Shhhh...", "'Who's that??'", "'Did they saw me??'"]), "Orange")
+alert = words(30, g.r.choice(["You're being heard...", "Shhhh...", "'Who's that??'", "'Did they hear me??'"]), "Orange")
 detecting_text = words(30, "Detecting Card...", "Green")
 
 # Dictionaries of surfaces...
