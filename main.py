@@ -126,54 +126,28 @@ catch_factor = 0
 
 # Static sprites...
 cards = g.pg.sprite.Group()
-c_2 = sfsp.Card("./assets/PNG-cards-1.3/2_of_clubs.png")
-d_2 = sfsp.Card("./assets/PNG-cards-1.3/2_of_diamonds.png")
-h_2 = sfsp.Card("./assets/PNG-cards-1.3/2_of_hearts.png")
-s_2 = sfsp.Card("./assets/PNG-cards-1.3/2_of_spades.png")
-c_3 = sfsp.Card("./assets/PNG-cards-1.3/3_of_clubs.png")
-d_3 = sfsp.Card("./assets/PNG-cards-1.3/3_of_diamonds.png")
-h_3 = sfsp.Card("./assets/PNG-cards-1.3/3_of_hearts.png")
-s_3 = sfsp.Card("./assets/PNG-cards-1.3/3_of_spades.png")
-c_4 = sfsp.Card("./assets/PNG-cards-1.3/4_of_clubs.png")
-d_4 = sfsp.Card("./assets/PNG-cards-1.3/4_of_diamonds.png")
-h_4 = sfsp.Card("./assets/PNG-cards-1.3/4_of_hearts.png")
-s_4 = sfsp.Card("./assets/PNG-cards-1.3/4_of_spades.png")
-c_5 = sfsp.Card("./assets/PNG-cards-1.3/5_of_clubs.png")
-d_5 = sfsp.Card("./assets/PNG-cards-1.3/5_of_diamonds.png")
-h_5 = sfsp.Card("./assets/PNG-cards-1.3/5_of_hearts.png")
-s_5 = sfsp.Card("./assets/PNG-cards-1.3/5_of_spades.png")
-c_6 = sfsp.Card("./assets/PNG-cards-1.3/6_of_clubs.png")
-d_6 = sfsp.Card("./assets/PNG-cards-1.3/6_of_diamonds.png")
-h_6 = sfsp.Card("./assets/PNG-cards-1.3/6_of_hearts.png")
-s_6 = sfsp.Card("./assets/PNG-cards-1.3/6_of_spades.png")
-c_7 = sfsp.Card("./assets/PNG-cards-1.3/7_of_clubs.png")
-d_7 = sfsp.Card("./assets/PNG-cards-1.3/7_of_diamonds.png")
-h_7 = sfsp.Card("./assets/PNG-cards-1.3/7_of_hearts.png")
-s_7 = sfsp.Card("./assets/PNG-cards-1.3/7_of_spades.png")
-c_8 = sfsp.Card("./assets/PNG-cards-1.3/8_of_clubs.png")
-d_8 = sfsp.Card("./assets/PNG-cards-1.3/8_of_diamonds.png")
-h_8 = sfsp.Card("./assets/PNG-cards-1.3/8_of_hearts.png")
-s_8 = sfsp.Card("./assets/PNG-cards-1.3/8_of_spades.png")
-c_9 = sfsp.Card("./assets/PNG-cards-1.3/9_of_clubs.png")
-d_9 = sfsp.Card("./assets/PNG-cards-1.3/9_of_diamonds.png")
-h_9 = sfsp.Card("./assets/PNG-cards-1.3/9_of_hearts.png")
-s_9 = sfsp.Card("./assets/PNG-cards-1.3/9_of_spades.png")
-c_10 = sfsp.Card("./assets/PNG-cards-1.3/10_of_clubs.png")
-d_10 = sfsp.Card("./assets/PNG-cards-1.3/10_of_diamonds.png")
-h_10 = sfsp.Card("./assets/PNG-cards-1.3/10_of_hearts.png")
-s_10 = sfsp.Card("./assets/PNG-cards-1.3/10_of_spades.png")
-c_J = sfsp.Card("./assets/PNG-cards-1.3/jack_of_clubs.png")
-d_J = sfsp.Card("./assets/PNG-cards-1.3/jack_of_diamonds.png")
-h_J = sfsp.Card("./assets/PNG-cards-1.3/jack_of_hearts.png")
-s_J = sfsp.Card("./assets/PNG-cards-1.3/jack_of_spades.png")
-c_Q = sfsp.Card("./assets/PNG-cards-1.3/queen_of_clubs.png")
-d_Q = sfsp.Card("./assets/PNG-cards-1.3/queen_of_diamonds.png")
-h_Q = sfsp.Card("./assets/PNG-cards-1.3/queen_of_hearts.png")
-s_Q = sfsp.Card("./assets/PNG-cards-1.3/queen_of_spades.png")
-c_K = sfsp.Card("./assets/PNG-cards-1.3/king_of_clubs.png")
-d_K = sfsp.Card("./assets/PNG-cards-1.3/king_of_diamonds.png")
-h_K = sfsp.Card("./assets/PNG-cards-1.3/king_of_hearts.png")
-s_K = sfsp.Card("./assets/PNG-cards-1.3/king_of_spades.png")
+cards2 = g.pg.sprite.Group()
+letters = ['J', 'Q', 'K']
+for i in range(2, 14):
+    if i > 10:
+        globals()[f'c_{letters[i - 11]}'] = sfsp.Card(f"./assets/PNG-cards-1.3/c_{letters[i - 11]}.png")
+        globals()[f'd_{letters[i - 11]}'] = sfsp.Card(f"./assets/PNG-cards-1.3/d_{letters[i - 11]}.png")
+        globals()[f'h_{letters[i - 11]}'] = sfsp.Card(f"./assets/PNG-cards-1.3/h_{letters[i - 11]}.png")
+        globals()[f's_{letters[i - 11]}'] = sfsp.Card(f"./assets/PNG-cards-1.3/s_{letters[i - 11]}.png")
+        globals()[f'c_{letters[i - 11]}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/c_{letters[i - 11]}.png")
+        globals()[f'd_{letters[i - 11]}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/d_{letters[i - 11]}.png")
+        globals()[f'h_{letters[i - 11]}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/h_{letters[i - 11]}.png")
+        globals()[f's_{letters[i - 11]}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/s_{letters[i - 11]}.png")
+        continue
+    globals()[f'c_{i}'] = sfsp.Card(f"./assets/PNG-cards-1.3/c_{i}.png")
+    globals()[f'd_{i}'] = sfsp.Card(f"./assets/PNG-cards-1.3/d_{i}.png")
+    globals()[f'h_{i}'] = sfsp.Card(f"./assets/PNG-cards-1.3/h_{i}.png")
+    globals()[f's_{i}'] = sfsp.Card(f"./assets/PNG-cards-1.3/s_{i}.png")
+    globals()[f'c_{i}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/c_{i}.png")
+    globals()[f'd_{i}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/d_{i}.png")
+    globals()[f'h_{i}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/h_{i}.png")
+    globals()[f's_{i}2'] = sfsp.Card2(f"./assets/PNG-cards-1.3/s_{i}.png")
+
 twos, threes, fours, fives, sixes, sevens, eights, nines, tens, jacks, queens, kings = [c_2, d_2, h_2, s_2], [c_3, d_3, h_3, s_3], [c_4, d_4, h_4, s_4], [c_5, d_5, h_5, s_5], [c_6, d_6, h_6, s_6], [c_7, d_7, h_7, s_7], [c_8, d_8, h_8, s_8], [c_9, d_9, h_9, s_9], [c_10, d_10, h_10, s_10], [c_J, d_J, h_J, s_J], [c_Q, d_Q, h_Q, s_Q], [c_K, d_K, h_K, s_K]
 temp = [twos, threes, fours, fives, sixes, sevens, eights, nines, tens, jacks, queens, kings]
 clubs, diams, hears, spads = [], [], [], []
@@ -183,8 +157,19 @@ for group in temp:
     hears.append(group[2])
     spads.append(group[3])
 card_list = [clubs, diams, hears, spads]
+twos2, threes2, fours2, fives2, sixes2, sevens2, eights2, nines2, tens2, jacks2, queens2, kings2 = [c_22, d_22, h_22, s_22], [c_32, d_32, h_32, s_32], [c_42, d_42, h_42, s_42], [c_52, d_52, h_52, s_52], [c_62, d_62, h_62, s_62], [c_72, d_72, h_72, s_72], [c_82, d_82, h_82, s_82], [c_92, d_92, h_92, s_92], [c_102, d_102, h_102, s_102], [c_J2, d_J2, h_J2, s_J2], [c_Q2, d_Q2, h_Q2, s_Q2], [c_K2, d_K2, h_K2, s_K2]
+temp = [twos2, threes2, fours2, fives2, sixes2, sevens2, eights2, nines2, tens2, jacks2, queens2, kings2]
+clubs2, diams2, hears2, spads2 = [], [], [], []
+for group in temp:
+    clubs2.append(group[0])
+    diams2.append(group[1])
+    hears2.append(group[2])
+    spads2.append(group[3])
+card_list2 = [clubs2, diams2, hears2, spads2]
 symbol = None
 num = 0
+symbol2 = None
+num2 = 0
 
 # Gameplay and misc...
 silence = True
@@ -215,10 +200,19 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 g.c.x = False
                 g.c.x_rel = True
 
+        if event.type == g.pg.KEYDOWN:
+            if event.key == g.pg.K_n and g.c.n_rel:
+                g.c.n = True
+                g.c.n_rel = False
+        elif event.type == g.pg.KEYUP:
+            if event.key == g.pg.K_n:
+                g.c.n = False
+                g.c.n_rel = True
+
         if event.type == g.pg.QUIT:
             g.q()
             thread[0] = False
-            my_game_works, in_menu, in_credits, in_inst, in_scene = False, False, False, False, False
+            my_game_works, in_menu, in_credits, in_inst, in_scene, fight_start = False, False, False, False, False, False
 
         if event.type == g.pg.MOUSEBUTTONDOWN:
             if event.button == 1:
@@ -302,7 +296,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
                 silence = True
                 almost = False
                 hearing = False
-                reading = [False]
+                reading[0] = False
 
         elif symbol == 0:
             sc.blit(assasin_gun_frames[gun_frame],
@@ -323,8 +317,6 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             if gun_frame == 39 or mob_death_frame == 39:
                 in_scene = False
                 my_game_works = True
-                g.c.enter = False
-                g.c.enter_rel = True
                 mob_death_frame = 0
                 gun_frame = 0
                 last_s0 = 0
@@ -348,8 +340,6 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             if blade_frame == 39 or mob_death_frame == 39:
                 in_scene = False
                 my_game_works = True
-                g.c.enter = False
-                g.c.enter_rel = True
                 mob_death_frame = 0
                 blade_frame = 0
                 last_s1 = 0
@@ -372,8 +362,6 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             if hand2hand_frame == 39 or mob_death_frame == 39:
                 in_scene = False
                 my_game_works = True
-                g.c.enter = False
-                g.c.enter_rel = True
                 mob_death_frame = 0
                 hand2hand_frame = 0
                 last_s2 = 0
@@ -423,6 +411,46 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
         # Fight?
         now = g.pg.time.get_ticks()
         if fight_start:
+
+            # Stop listening...
+            listening[0] = False
+
+            # Place dynamic backgrounds...
+            sc.blit(sfsp.words(30, "Press x to ATTACK/DEFEND", "Green"), surf["DBackground"]["loc_Assassinate"])
+            sc.blit(surf["DBackground"]["Detect"], surf["DBackground"]["loc_Detect"])
+            sc.blit(surf["DBackground"]["Mob_Detect"], surf["DBackground"]["loc_Mob_Detect"])
+            sc.blit(surf["DBackground"]["Mob_Attack"], surf["DBackground"]["loc_Mob_Attack"])
+
+            # Assassin's attacks\defenses...
+            if g.c.n:
+                g.pg.event.post(read_event)
+                g.c.n = False
+                g.c.n_rel = True
+
+                if not kyu.empty():
+                    symbol2 = kyu.get_nowait()
+                    num2 = kyu.get_nowait()
+                    reading[0] = False
+
+                if (symbol2 == 0 or symbol2 == 1 or symbol2 == 2 or symbol2 == 3):
+                    cards2.empty()
+                    cards2.add(card_list2[symbol2][num2])
+
+            if g.c.z:
+                g.pg.event.post(read_event)
+                g.c.z = False
+                g.c.z_rel = True
+
+                if not kyu.empty():
+                    symbol = kyu.get_nowait()
+                    num = kyu.get_nowait()
+                    reading[0] = False
+
+                if (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3):
+                    cards.empty()
+                    cards.add(card_list[symbol][num])
+
+            # Fight duration ends...
             if now - fight_start >= g.c.FIGHT:
                 my_game_works = False
                 in_menu = True
@@ -459,7 +487,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
 
         # Place cards...
         now = g.pg.time.get_ticks()
-        if g.c.z:
+        if g.c.z and not fight_start:
             kyu.queue.clear()
             in_scene = True
             my_game_works = False
@@ -468,22 +496,24 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             read_animation = True
             continue
 
-        if not kyu.empty():
+        if not kyu.empty() and not fight_start:
             symbol = kyu.get_nowait()
             num = kyu.get_nowait()
             reading[0] = False
 
-        if (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3):
+        if (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and not fight_start:
             cards.empty()
             cards.add(card_list[symbol][num])
 
-        if g.c.x and (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and not hearing and not almost:
+        if g.c.x and (symbol == 0 or symbol == 1 or symbol == 2 or symbol == 3) and not hearing and not almost and not fight_start:
             in_scene = True
             my_game_works = False
             start_s = now
             mouse_pressed = False
             continue
+
         cards.draw(sc)
+        cards2.draw(sc)
 
         # Quitting?...
         now = g.pg.time.get_ticks()
@@ -492,6 +522,7 @@ while my_game_works or in_credits or in_menu or in_inst or in_scene:
             in_menu = True
             mouse_pressed = False
             symbol = None
+            reading[0] = True
             num = 0
             cards.empty()
 

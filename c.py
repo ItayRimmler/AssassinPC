@@ -15,6 +15,8 @@ z = False
 z_rel = True
 x = False
 x_rel = True
+n = False
+n_rel = True
 
 # Sound detection parameters...
 DUR = 1
